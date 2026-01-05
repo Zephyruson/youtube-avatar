@@ -1,6 +1,6 @@
 import requests
 
-CHANNEL_URL = "https://www.youtube.com/@USERNAME"
+CHANNEL_URL = "https://www.youtube.com/@JamieTX"
 
 html = requests.get(CHANNEL_URL).text
 
