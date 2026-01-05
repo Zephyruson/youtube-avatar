@@ -1,13 +1,22 @@
 import requests
+import re
 
 CHANNEL_URL = "https://www.youtube.com/@JamieTX"
 
-html = requests.get(CHANNEL_URL).text
+headers = {
+    "User-Agent": "Mozilla/5.0"
+}
 
-start = html.find('"avatar":{"thumbnails":[{"url":"') + 35
-end = html.find('"', start)
-avatar_url = html[start:end]
+html = requests.get(CHANNEL_URL, headers=headers).text
 
-img = requests.get(avatar_url).content
+match = re.search(r'"avatar":\{"thumbnails":\[\{"url":"(https:[^"]+)"', html)
+
+if not match:
+    raise Exception("Avatar URL not found")
+
+avatar_url = match.group(1)
+
+img = requests.get(avatar_url, headers=headers).content
+
 with open("avatar.png", "wb") as f:
     f.write(img)
